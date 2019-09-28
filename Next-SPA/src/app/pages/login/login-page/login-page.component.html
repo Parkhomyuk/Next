@@ -1,0 +1,163 @@
+<div class="row login_page">
+  <div class="col s12">
+    <div class="container">
+
+      <div id="login-page" class="row" *ngIf="status=='login'">
+      <div class="col s12 m6 l4 xl1 z-depth-4 card-panel border-radius-6 login-card bg-opacity-8">
+        <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()">
+          <div class="row">
+            <div class="input-field col s12 login-title">
+              <h5 class="ml-4">Sign in</h5>
+            </div>
+          </div>
+          <div class="row margin">
+            <div class="input-field col s12">
+              <i class="material-icons prefix pt-2">person_outline</i>
+              <input id="username" type="text" id="login-username"  formControlName="name"  class="validate">
+              <label for="login-username" class="center-align">Username</label>
+              <span *ngIf="loginForm.get('name').errors && loginForm.get('name').touched" class="helper-text" data-error="wrong" data-success="right">
+                the field required valid email
+              </span>
+            </div>
+          </div>
+          <div class="row margin">
+            <div class="input-field col s12">
+              <i class="material-icons prefix pt-2">lock_outline</i>
+              <input id="password" type="password" formControlName="password" class="validate">
+              <label for="password">Password</label>
+               <span *ngIf="loginForm.get('password').errors && loginForm.get('password').touched" class="helper-text" data-error="wrong" data-success="right">
+                the field required
+              </span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col s12 m12 l12 ml-2 mt-1">
+              <p>
+                <label>
+                  <input type="checkbox" formControlName="remember">
+                  <span>Remember Me</span>
+                </label>
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <button class="btn waves-effect waves-light border-round gradient-45deg-purple-deep-orange col s12" type="submit" [disabled]="!loginForm.valid">Login</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s6 m6 l6">
+              <p class="margin medium-small"><a   (click)="onRegistr()">Register Now!</a></p>
+            </div>
+            <div class="input-field col s6 m6 l6">
+              <p class="margin right-align medium-small"><a  (click)="OnForgot()">Forgot password ?</a></p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+      <!--//registr window&ndash;&gt;-->
+   <div id="register-page" class="row" *ngIf="status=='register'">
+        <div class="col s12 m6 l4 z-depth-4 card-panel border-radius-6 register-card bg-opacity-8">
+          <form class="login-form" [formGroup]="registerForm" (ngSubmit)="OnSubmitRegister()">
+            <div class="row">
+              <div class="input-field col s12 headline">
+                <h5 class="ml-4">Register</h5>
+                <p class="ml-4">Join to our community now !</p>
+              </div>
+            </div>
+            <div class="row margin">
+              <div class="input-field col s12">
+                <i class="material-icons prefix pt-2">person_outline</i>
+                <input  type="text" id="username-register" formControlName="nick" class="validate">
+                <label for="username-register" class="center-align">Username</label>
+                <span *ngIf="registerForm.get('nick').errors && registerForm.get('nick').touched" class="helper-text form-required" data-error="wrong" data-success="right">
+                the NICK is required
+              </span>
+              </div>
+            </div>
+            <div class="row margin">
+              <div class="input-field col s12">
+                <i class="material-icons prefix pt-2">mail_outline</i>
+                <input id="email" type="email" formControlName="name" class="validate">
+                <label for="email">Email</label>
+                 <span *ngIf="registerForm.get('name').errors && registerForm.get('name').touched" class="helper-text form-required" data-error="wrong" data-success="right">
+                the e-mail is  required
+              </span>
+              </div>
+            </div>
+            <div   >
+              <div class="row margin">
+                <div class="input-field col s12">
+                  <i class="material-icons prefix pt-2">lock_outline</i>
+                  <input  type="password" id="password-register" formControlName="password"  class="validate">
+                  <label for="password-register">Password</label>
+                   <span *ngIf="registerForm.get('password').errors && registerForm.get('password').touched" class="helper-text form-required" data-error="wrong" data-success="right">
+                the password  is required
+              </span>
+                </div>
+              </div>
+              <div class="row margin">
+                <div class="input-field col s12">
+                  <i class="material-icons prefix pt-2">lock_outline</i>
+                  <input  type="password" id="password-again" formControlName="confirmPassword"   class="validate">
+                  <label for="password-again">Password again</label>
+                </div>
+              </div>
+             <span *ngIf="registerForm.controls.confirmPassword.errors?.MatchPassword" class="helper-text form-required " data-error="wrong" data-success="right">
+                Password not match
+              </span>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <button class="btn waves-effect waves-light border-round gradient-45deg-purple-deep-orange col s12" type="submit" [disabled]="!registerForm.valid || registerForm.controls.confirmPassword.errors?.MatchPassword">Register</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <p class="margin medium-small"><a  (click)="OnLogin()">Already have an account? Login</a></p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+<!--forget password-->
+   <div id="forgot-password-page" class="row" *ngIf="status=='forgot'">
+      <div class="col s12 m6 l4 z-depth-4 offset-m4 card-panel border-radius-6 forgot-card bg-opacity-8">
+        <form class="login-form">
+          <div class="row">
+            <div class="input-field col s12">
+              <h5 class="ml-4">Forgot Password</h5>
+              <p class="ml-4">You can reset your password</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <i class="material-icons prefix pt-2">person_outline</i>
+              <input id="email-forget" type="email">
+              <label for="email-forget" class="center-align">Email</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+
+              <div class="btn waves-effect waves-light border-round gradient-45deg-purple-deep-orange col s12">Reset
+                Password</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s6 m6 l6">
+              <p class="margin medium-small"><a (click)="OnLogin()">Login</a></p>
+            </div>
+            <div class="input-field col s6 m6 l6">
+              <p class="margin right-align medium-small"><a (click)="onRegistr()">Register</a></p>
+            </div>
+          </div>
+        </form>
+      </div>
+</div>
+    </div>
+  </div>
+</div>

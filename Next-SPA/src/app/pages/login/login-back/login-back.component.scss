@@ -1,0 +1,14 @@
+#jsi-hex-container{
+  position: absolute;
+  z-index: 1;
+  with: 100vw;
+  height: 100vh;
+  background-color: rgba(5, 0, 0, 1);
+  canvas{
+    margin-top: -22px;
+    margin-left: -22px;
+
+    color: rgba(249, 209, 0, 0.51);
+  }
+
+}
