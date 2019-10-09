@@ -1,4 +1,5 @@
 import { Component, OnInit ,AfterViewInit, ElementRef, ViewChild,HostListener, Renderer} from '@angular/core';
+import {Observable, interval} from "rxjs";
 
 
 @Component({
@@ -28,7 +29,7 @@ export class LoginBackComponent implements OnInit , AfterViewInit {
 
   }
 
-  @HostListener('click', ['$event'])
+  @HostListener('mouseenter', ['$event'])
   onMouseenter(event: MouseEvent): void  {
     console.log(event.screenX);
     console.log(event.screenY);
@@ -57,6 +58,10 @@ export class LoginBackComponent implements OnInit , AfterViewInit {
   countHeight:number=0;
   arr:any[]=[];
   hex: any;
+  color:string="#0E3556";
+  changeColor: any;
+  //colorArray:string[]=[ "rgb(36, 0, 0)","rgb(46, 0, 0)","rgb(56, 0, 0)","rgb(66, 0, 0)","rgb(56, 0, 0)","rgb(46, 0, 0)","rgb(36, 0, 0)","rgba(5, 0, 0, 1)"];
+  colorArray:string[]=[ "rgb(26, 0, 0)","rgb(36, 0, 0)","rgb(46, 0, 0)","rgb(56, 0, 0)","rgb(46, 0, 0)","rgb(36, 0, 0)","rgb(26, 0, 0)","rgba(5, 0, 0, 1)"];
   constructor(private el: ElementRef,
               private renderer: Renderer) {
 
@@ -68,39 +73,48 @@ export class LoginBackComponent implements OnInit , AfterViewInit {
     console.log('width',this.screenWidth+' === '+'height',this.screenHeight)
     //noinspection TypeScriptUnresolvedVariable
     this.context = (<HTMLCanvasElement>this.myCanvas.nativeElement).getContext('2d');
+    let countColor=0;
     this.create_window_hexagons();
+    this.changeColor = setInterval(() => {
+      if(countColor>=this.colorArray.length){
+        countColor=0;
+      }
+      //this.color=this.colorArray[countColor];
+      //noinspection TypeScriptUnresolvedVariable
+      this.parentDiv.nativeElement.style.backgroundColor=this.colorArray[countColor];
+      this.create_window_hexagons();
 
-   /* this.context.canvas.width=this.screenWidth+this.size;
-    this.context.canvas.height=this.screenHeight+this.size;
-    let xx=0;
-    let yy=0;
-    this.countWidth=Math.floor(this.screenWidth/this.size);
-    this.countHeight=Math.floor(this.screenHeight/this.size*1.5);
+      countColor++;
 
-    for(let i=0;i<this.countHeight;i++){
-      this.create_hexagonsRow(xx,yy);
-      yy=yy+this.size*1.8;
-    }*/
+    }, 1000);
+
+
+  }
+  ngOnDestroy() {
+    clearInterval(this.changeColor);
   }
   ngAfterViewInit() {
     this.onResize();
-    // wait a tick to avoid one-time devMode
-    // unidirectional-data-flow-violation error
-    //noinspection TypeScriptUnresolvedVariable
-    //setTimeout(_ => this.divWidth = this.parentDiv.nativeElement.clientWidth);
+
   }
 
+
   hexagon(ss,yy){
+
     this.context.beginPath();
-    this.context.fillStyle = "#0E3556";
+
+     // this.context.fillStyle = "rgba(0, 186, 255, 0.84)";
+
+      this.context.fillStyle = this.color;
+
+
+
     this.context.moveTo(ss+this.x + this.size * Math.cos(0), yy+this.y + this.size * Math.sin(0));
-   /* if((ss+this.x)>720 && (yy+this.y)> 500&&(yy+this.y)<800 && (ss+this.x)<1400){
-      this.context.fillStyle = "green";
-    }*/
+
     this.hex = new Path2D();
     for (this.side; this.side <7; this.side++) {
 
-      //  this.context.lineTo(ss+this.x + this.size * Math.cos(this.side * 2 * Math.PI / 6), yy+this.y + this.size * Math.sin(this.side * 2 * Math.PI / 6));
+
       this.hex .lineTo(ss+this.x + this.size * Math.cos(this.side * 2 * Math.PI / 6)*0.98, yy+this.y + this.size * Math.sin(this.side * 2 * Math.PI / 6)*0.98);
       this.hex.x=ss+this.x;
 
@@ -113,11 +127,11 @@ export class LoginBackComponent implements OnInit , AfterViewInit {
 
     this.side = 0;
     this.context.closePath();
-    this.context.fillStyle = "#0E3556";
 
 
-    this.context.lineWidth=0.5;
-    this.context.stroke();
+
+   /* this.context.lineWidth=0.5;
+    this.context.stroke();*/
   }
   create_hexagonsRow(x,y){
     let yInternal=y;
@@ -146,9 +160,7 @@ export class LoginBackComponent implements OnInit , AfterViewInit {
       yy=yy+this.size*1.8;
     }
   }
-  onClickHexagon(){
 
-  }
 
 
 
